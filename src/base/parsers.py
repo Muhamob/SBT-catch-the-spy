@@ -15,7 +15,7 @@ class BaseParser(ABC):
     @abstractmethod
     def parse(self,
               path: typing.Union[str, os.PathLike],
-              *args, **kwargs) -> typing.Union[dict, list, tuple]:
+              *args, **kwargs):
         """
         Parse file to intermediate representation
         :param path: path to file which would be parsed
@@ -25,10 +25,10 @@ class BaseParser(ABC):
         """
         pass
 
-    def parse_to_json(self,
-                      path: typing.Union[str, os.PathLike],
-                      *args, **kwargs):
-        result = self.parse(path, *args, **kwargs)
-
-        with open(path.replace(f".{self.input_format}", f"_{self.input_format}.json"), 'w') as f:
-            json.dump(result, f)
+    @staticmethod
+    def to_json(obj,
+                output_path: typing.Union[str, os.PathLike],
+                *args, **kwargs):
+        f = open(output_path, 'w')
+        json.dump(obj, f)
+        f.close()
