@@ -25,3 +25,8 @@ class YamlToJson(BaseParser):
                 current_flight = line
                 current_name = line.rstrip(':\'\n').strip('\'')
         file.close()
+
+
+if __name__ == '__main__':
+    a = YamlToJson()
+    a.parse("SkyTeam-Exchange.yaml")  # PATH TO YAML
