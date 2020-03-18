@@ -1,5 +1,6 @@
 import os
 import typing
+from multiprocessing.pool import Pool
 
 import openpyxl
 from tqdm import tqdm
@@ -24,10 +25,9 @@ class CellParser:
         self.cell_type = cell_type
 
     def parse(self, sheet: openpyxl.worksheet.worksheet.Worksheet) -> dict:
-        cell = dict(
-            name=self.alias,
-            value=sheet.cell(row=self.row, column=self.col).value
-        )
+        cell = {
+            self.alias: sheet.cell(row=self.row, column=self.col).value
+        }
 
         return cell
 
@@ -98,17 +98,28 @@ class XLSXParser(BaseParser):
             sheet_info = self.sheetParser.parse(sheet)
             results.append(sheet_info)
 
-        self.to_json(results, path.replace(".xlsx", "xlsx.json"))
+        base, filename = os.path.split(path)
+        output_path = kwargs.get(
+            "output_path",
+            os.path.join("../../data/xlsx-parsed", filename.replace("xlsx", "json"))
+        )
+        self.to_json(results, output_path)
 
 
-def parse_to_json(parser: BaseParser, paths: typing.Iterable[str]):
-    for path in tqdm(paths):
-        assert path.endswith(".xlsx"), f"File must be xlsx, got {path}"
-        parser.parse(path)
+def parse_to_json(parser: BaseParser, paths: typing.Sequence[str]):
+    with Pool(4) as p:
+        for _ in tqdm(p.imap_unordered(parser.parse, paths), total=len(paths)):
+            pass
+    # with Pool(4) as p:
+    #     for path in tqdm(paths):
+    #         assert path.endswith(".xlsx"), f"File must be xlsx, got {path}"
+    #         p.apply_async(parser.parse, (path, ))
+            # parser.parse(path)
 
 
 if __name__ == "__main__":
     import glob
 
     parser = XLSXParser(DEFAULT_CELL_PARSERS)
-    parse_to_json(parser, glob.glob("data/*.xlsx"))
+    print(os.getcwd())
+    parse_to_json(parser, glob.glob("../../../final-project/data/raw-xlsx/*.xlsx"))
