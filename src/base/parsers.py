@@ -1,7 +1,10 @@
 import json
 import os
-from abc import ABC, abstractmethod
 import typing
+from abc import ABC, abstractmethod
+
+from src.base import loggers
+from src.base.loggers import logger_decorator
 
 
 class BaseParser(ABC):
@@ -11,6 +14,7 @@ class BaseParser(ABC):
 
     # Parser input format
     input_format: str = "json"
+    logger = loggers.logger
 
     @abstractmethod
     def parse(self,
@@ -25,10 +29,12 @@ class BaseParser(ABC):
         """
         pass
 
-    @staticmethod
-    def to_json(obj,
+    def to_json(self,
+                obj,
                 output_path: typing.Union[str, os.PathLike],
                 *args, **kwargs):
+        self.logger.info(f"Running {self.__class__.__name__} parser, saving json")
         f = open(output_path, 'w')
         json.dump(obj, f)
         f.close()
+        self.logger.info("Saved")
