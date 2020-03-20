@@ -4,7 +4,6 @@ import typing
 from abc import ABC, abstractmethod
 
 from src.base import loggers
-from src.base.loggers import logger_decorator
 
 
 class BaseParser(ABC):
