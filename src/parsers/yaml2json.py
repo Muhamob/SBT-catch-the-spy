@@ -7,7 +7,7 @@ import yaml
 from src.base.parsers import BaseParser
 
 
-class YamlToJson(BaseParser):
+class YAMLParser(BaseParser):
 
     def parse(self, path: typing.Union[str, os.PathLike], *args, **kwargs):
         output_dir = kwargs.get('output_dir', '../../data/yaml-parsed/')
