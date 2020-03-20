@@ -40,9 +40,11 @@ class TABParser(BaseParser):
                     d[key] = 'N/A'
 
             rows_for_json.append(d)
-
-        self.to_json(rows_for_json, output_path='/Users/dmitrij/B.I.G DATA Dymin/Sirena-export-fixed.json')
+        
+        output_path = kwargs.get('output_path', '../../data/tab-parsed/Sirena-export-fixed.json')
+        self.to_json(rows_for_json, output_path=output_path)
 
 if __name__ == '__main__':
     a = TABParser()
     a.parse('/Users/dmitrij/Downloads/Sirena-export-fixed.tab')
+
