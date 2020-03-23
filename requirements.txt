@@ -3,6 +3,7 @@ et-xmlfile==1.0.1
 jdcal==1.4.1
 openpyxl==3.0.3
 powerline-status==2.7
+pymongo==3.10.1
 PyYAML==5.3.1
 tqdm==4.43.0
 xmltodict==0.12.0
