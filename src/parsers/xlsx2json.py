@@ -86,7 +86,10 @@ class XLSXParser(BaseParser):
     """
     input_format = "xlsx"
 
-    def __init__(self, cell_parsers: typing.Tuple[CellParser] = DEFAULT_CELL_PARSERS):
+    def __init__(self,
+                 output_dir: typing.Union[str, os.PathLike],
+                 cell_parsers: typing.Tuple[CellParser] = DEFAULT_CELL_PARSERS):
+        super().__init__(output_dir)
         self.cell_parsers = cell_parsers
         self.sheetParser = SheetParser(cell_parsers)
 
@@ -98,7 +101,8 @@ class XLSXParser(BaseParser):
             sheet_info = self.sheetParser.parse(sheet)
             results.append(sheet_info)
 
-        self.to_json(results, path.replace(".xlsx", "xlsx.json"))
+        output_path = kwargs.get('output_path', self._get_default_output_path(path))
+        self.to_json(results, output_path)
 
 
 def parse_to_json(parser: BaseParser, paths: typing.Iterable[str]):
@@ -110,5 +114,5 @@ def parse_to_json(parser: BaseParser, paths: typing.Iterable[str]):
 if __name__ == "__main__":
     import glob
 
-    parser = XLSXParser(DEFAULT_CELL_PARSERS)
+    parser = XLSXParser(output_dir="../../data/xlsx-parsed")
     parse_to_json(parser, glob.glob("data/*.xlsx"))

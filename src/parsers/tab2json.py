@@ -41,11 +41,11 @@ class TABParser(BaseParser):
 
             rows_for_json.append(d)
         
-        output_path = kwargs.get('output_path', '../../data/tab-parsed/Sirena-export-fixed.json')
+        output_path = kwargs.get('output_path', self._get_default_output_path(path))
         self.to_json(rows_for_json, output_path=output_path, ensure_ascii=False)
 
 
 if __name__ == '__main__':
-    a = TABParser()
+    a = TABParser(output_dir="../../data/tab-parsed")
     a.parse('../../../final-project/data/Sirena-export-fixed.tab')
 
