@@ -24,10 +24,9 @@ class CellParser:
         self.cell_type = cell_type
 
     def parse(self, sheet: openpyxl.worksheet.worksheet.Worksheet) -> dict:
-        cell = dict(
-            name=self.alias,
-            value=sheet.cell(row=self.row, column=self.col).value
-        )
+        cell = {
+            f"{self.alias}": sheet.cell(row=self.row, column=self.col).value
+        }
 
         return cell
 
