@@ -12,11 +12,11 @@ class CSVParser(BaseParser):
             reader = csv.DictReader(f, delimiter=';')
             rows = list(reader)
 
-        output_path = kwargs.get('output_path', '../../data/csv-parsed/BoardingData.json')
+        output_path = kwargs.get('output_path', self._get_default_output_path(path))
         self.to_json(rows, output_path=output_path)
 
 
 if __name__ == '__main__':
-    a = CSVParser()
-    a.parse('/Users/dmitrij/Downloads/BoardingData.csv')
+    a = CSVParser(output_dir="../../data/csv-parsed")
+    a.parse('../../../final-project/data/BoardingData.csv')
 
