@@ -3,7 +3,7 @@ import typing
 
 from src.base.loggers import logger
 from src.base.parsers import BaseParser
-from src.parsers import XLSXParser, TABParser, CSVParser, YAMLParser, XMLParser
+from src.parsers import *
 
 path_type = typing.Union[str, os.PathLike]
 
@@ -54,6 +54,7 @@ if __name__ == "__main__":
         'tab': TABParser(output_dir="../../data/tab-parsed"),
         'csv': CSVParser(output_dir="../../data/csv-parsed"),
         'yaml': YAMLParser(output_dir="../../data/yaml-parsed"),
+        'json': JSONParser(output_dir="../../data/json-parsed")
     }
 
     pipeline = Pipeline(parsers)
