@@ -3,6 +3,7 @@ from src.parsers.tab2json import TABParser
 from src.parsers.xlsx2json import XLSXParser
 from src.parsers.yaml2json import YAMLParser
 from src.parsers.xml2json import XMLParser
+from src.parsers.json2json import JSONParser
 
 
 __all__ = [
@@ -10,5 +11,6 @@ __all__ = [
     "CSVParser",
     "TABParser",
     "XLSXParser",
-    "XMLParser"
+    "XMLParser",
+    "JSONParser"
 ]
