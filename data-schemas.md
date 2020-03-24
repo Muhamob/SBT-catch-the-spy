@@ -74,44 +74,32 @@ ticket_num: "6964101325081258" # id билета
 ```
 
 ### XML <a name="xml"></a>:
-```json
-[
-    {
-        "@uid": "613142142",			
-        "name": {
-            "@first": "IAROMIR",
-            "@last": "ZVEREV"
-        },
-        "cards": {
-            "@type": "Airlines"  (все будут Airlines, так как файл называется Airlines),
-            "card": {
-                "@number": "FB 171388778",
-                "bonusprogramm": "Flying Blue",
-                "activities": {
-                    "@type": "Airlines",
-                    "activity": [
-                        {
-                            "@type": "Flight",
-                            "Code": "KE827",
-                            "Date": "2017-08-06",
-                            "Departure": "rea", (код аэропорта, напрмер как Шереметьево-SVO)
-                            "Arrival": "SZX",
-                            "Fare": "YGRPZT" (видимо тариф)
-                        },
-                        {
-                            "@type": "Flight",
-                            "Code": "MU9706",
-                            "Date": "2017-10-26",
-                            "Departure": "PEK",
-                            "Arrival": "BSD",
-                            "Fare": "YSTNYV"
-                        }
-                    ]
-                }
-            }
-        }
-    }
-]
+```yaml
+- "@uid": '613142142'
+  name:
+    "@first": IAROMIR
+    "@last": ZVEREV
+  cards:
+    "@type": Airlines  # (все будут Airlines, так как файл называется Airlines)
+    card:
+      "@number": FB 171388778
+      bonusprogramm: Flying Blue
+      activities:
+        "@type": Airlines
+        activity:
+        - "@type": Flight
+          Code: KE827
+          Date: '2017-08-06'
+          Departure: rea  # (код аэропорта, напрмер как Шереметьево-SVO)
+          Arrival: SZX
+          Fare: YGRPZT  # (видимо тариф)
+        - "@type": Flight
+          Code: MU9706
+          Date: '2017-10-26'
+          Departure: PEK
+          Arrival: BSD
+          Fare: YSTNYV
+
 ```
 
 ### YAML <a name="yaml"></a>:
