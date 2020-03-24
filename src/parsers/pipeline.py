@@ -47,7 +47,7 @@ class Pipeline:
                 self.logger.error(f"Cannot parse file")
 
 
-if __name__ == "__main__":
+def get_default_pipeline():
     parsers = {
         'xml': XMLParser(output_dir="../../data/xml-parsed"),
         'xlsx': XLSXParser(output_dir="../../data/xlsx-parsed"),
@@ -57,5 +57,9 @@ if __name__ == "__main__":
         'json': JSONParser(output_dir="../../data/json-parsed")
     }
 
-    pipeline = Pipeline(parsers)
+    return Pipeline(parsers)
+
+
+if __name__ == "__main__":
+    pipeline = get_default_pipeline()
     pipeline.parse_dir("../../../final-project/data")
