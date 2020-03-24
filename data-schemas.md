@@ -105,13 +105,13 @@ ticket_num: "6964101325081258" # id билета
 ### YAML <a name="yaml"></a>:
 ```yaml
 '2017-01-01': (Дата, название файла)
-  - AF1145: (скорее всего какой-то идентификатор пассажира)
-      FF: (frequent flyer)
-        FB 520518073: {CLASS: Y, FARE: YRSTFN} (программа лояльности - SU - aeroflot bonus, FB - flying blue : класс, расходы(?))
-      FROM: SVO (Откуда)
-      STATUS: LANDED (Статус: Приземлился и т.п.)
-      TO: CDG (куда)
-
+  AF1145: (скорее всего какой-то идентификатор пассажира)
+    FF: (frequent flyer)
+      - FB 520518073: {CLASS: Y, FARE: YRSTFN} (программа лояльности - SU - aeroflot bonus, FB - flying blue : класс, расходы(?))
+    FROM: SVO (Откуда)
+    STATUS: LANDED (Статус: Приземлился и т.п.)
+    TO: CDG (куда)
+  DATE: (дата)
 ```
 
 ### JSON <a name="json"></a>:
