@@ -34,6 +34,6 @@ class BaseParser(ABC):
                 *args, **kwargs):
         self.logger.info(f"Running {self.__class__.__name__} parser, saving json")
         f = open(output_path, 'w')
-        json.dump(obj, f, *args, **kwargs)
+        json.dump(obj, f, *args, **kwargs, indent=4)
         f.close()
         self.logger.info("Saved")
