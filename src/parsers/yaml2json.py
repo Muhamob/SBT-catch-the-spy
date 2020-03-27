@@ -12,9 +12,6 @@ class YamlToJson(BaseParser):
 
     def parse(self, path: typing.Union[str, os.PathLike], *args, **kwargs):
         file = open(path, 'r')
-        directory = "yaml/json_out/"
-        if not os.path.exists(directory):
-            os.makedirs(directory)
         current_flight = ""
         current_flight += file.readline()
         current_name = current_flight.rstrip(':\'\n').strip('\'')
@@ -24,7 +21,8 @@ class YamlToJson(BaseParser):
             else:
                 yaml_object = yaml.safe_load(current_flight)
                 yaml_to_json_obj = yaml_object[current_name]
-                self.to_json(yaml_to_json_obj, f"{directory}{current_name}.json")
+                json_obj = self.convert_to_arrays_of_json(yaml_to_json_obj, current_name)
+                self.to_json(json_obj, os.path.join(self.output_dir, f"{current_name}.json"))
                 current_flight = line
                 current_name = line.rstrip(':\'\n').strip('\'')
         file.close()
@@ -54,14 +52,5 @@ class YamlToJson(BaseParser):
 
 
 if __name__ == '__main__':
-    a = YamlToJson()
-    a.parse("yaml/SkyTeam-Exchange.yaml")  # PATH TO YAML
-    entries = os.listdir('yaml/json_out/')
-    array_directory = "yaml/json_array_out/"
-    if not os.path.exists(array_directory):
-        os.makedirs(array_directory)
-    for entry in entries:
-        with open('yaml/json_out/' + entry, 'r') as json_file:
-            json_array_data = a.convert_to_arrays_of_json(json.load(json_file), entry.split('.')[0])
-            with open(f"{array_directory}{entry}", "w") as write_file:
-                json.dump(json_array_data, write_file)
+    a = YamlToJson('../../data/yaml-parsed')
+    a.parse("../../../final-project/data/SkyTeam-Exchange.yaml")  # PATH TO YAML
