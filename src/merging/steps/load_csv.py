@@ -4,33 +4,13 @@ import typing
 from glob import glob
 
 from pymongo import MongoClient
-from tqdm import tqdm
+
+from src.merging.ops import create_collection, rename_fields
 
 path_type = typing.Union[os.PathLike, str]
 
 # Settings
 MAIN_DB_NAME = 'main'
-
-
-def create_collection(client: MongoClient, db_name: str, name: str):
-    db = client[db_name]
-    if name in db.list_collection_names():
-        db[name].drop()
-    collection = db[name]
-    return collection
-
-
-def rename_fields(json_objects: typing.Sequence[dict], mapping: dict):
-    """
-    Map object names
-    :param json_objects: list of dict objects
-    :param mapping: mapping: old_field_name -> new_field_name
-    :return:
-    """
-    new_objects = []
-    for obj in tqdm(json_objects):
-        new_objects.append({mapping.get(name, name): val for name, val in obj.items()})
-    return new_objects
 
 
 csv_mapping = {
@@ -87,5 +67,6 @@ def load_csv_files(client: MongoClient, paths: typing.Sequence[path_type], mappi
 
 
 if __name__ == "__main__":
-    client = MongoClient('localhost', 27017)
-    load_csv_files(client, glob('../../data/csv-parsed/*.json'), csv_mapping)
+    load_csv_files(client=MongoClient('localhost', 27017),
+                   paths=glob('../../data/csv-parsed/*.json'),
+                   mapping=csv_mapping)
