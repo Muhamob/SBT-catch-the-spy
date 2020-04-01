@@ -36,3 +36,55 @@ def rename_fields(json_objects: typing.Sequence[dict],
         new_objects.append({mapping.get(name, name): val for name, val in obj.items()})
 
     return new_objects
+
+
+def set_field(field: str, value: typing.Any) -> dict:
+    """
+    Return dict used to set field with value in aggregation pipeline
+    :param field:
+    :param value:
+    :return:
+    """
+    mongo_command = \
+        {
+            '$set': {
+                field: value
+            }
+        }
+
+    return mongo_command
+
+
+def create_uid() -> dict:
+    """
+    Return command used to replace current id by randomly generated
+    This command can be used only in aggregation pipeline
+    :return: dict with such command
+    """
+    command = {
+                  '$project':
+                      {
+                          '_id': False
+                      }
+              }
+    return command
+
+
+def delete_value_from_array(field: str, na_value: str) -> dict:
+    return {
+        '$set': {
+            field: {
+                '$filter': {
+                    'input': f'${field}',
+                    'as': field,
+                    'cond': {'$ne': [f'$${field}', na_value]}
+                }
+            }
+        }
+    }
+
+
+def sample(size: int) -> dict:
+    return {
+        '$sample': {'size': size}
+    }
