@@ -22,7 +22,7 @@ def create_collection(client: MongoClient,
     return collection
 
 
-def rename_fields(json_objects: typing.Sequence[dict],
+def rename_fields(json_objects: typing.Iterable[dict],
                   mapping: dict) -> typing.Sequence[dict]:
     """
     Map object names. If field name is not present in mapping, then it
