@@ -16,8 +16,8 @@ tab_mapping = {
     'e_Ticket': 'ticket',
     'DepartDate': 'dep_date',
     'DepartTime': 'dep_time',
-    'ArrivalDate': 'dep_date',
-    'ArrivalTime': 'dep_time',
+    'ArrivalDate': 'arr_date',
+    'ArrivalTime': 'arr_time',
     'From': 'dep_short',
     'Dest': 'arr_short',
     'FF': 'ff'

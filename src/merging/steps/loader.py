@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 import typing
 from abc import ABC, abstractmethod
@@ -9,8 +8,8 @@ from pymongo.collection import Collection
 from tqdm import tqdm
 
 from src.base import loggers
-from src.base.loggers import TqdmToLogger
 from src.merging.ops import create_collection, rename_fields
+
 
 PathType = typing.Union[os.PathLike, str]
 
@@ -64,6 +63,9 @@ class Loader(ABC):
         else:
             self.logger.error(f"Paths must be list, tuple or str objects, got {type(path)}")
             raise TypeError(f"Paths must be list, tuple or str objects, got {type(path)}")
+
+        total_count = self.collection.count_documents({})
+        self.logger.info(f"Total count of documents in collection {self.collection_name} is {total_count}")
 
     def insert_one_file(self, path: PathType):
         """
@@ -127,5 +129,3 @@ class Loader(ABC):
         """
         # tqdm_out = TqdmToLogger(self.logger, level=logging.INFO)
         return tqdm(iterable, disable=self.disable_tqdm, **kwargs)
-
-
