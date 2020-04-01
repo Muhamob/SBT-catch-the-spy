@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import typing
 from abc import ABC, abstractmethod
@@ -8,14 +9,25 @@ from pymongo.collection import Collection
 from tqdm import tqdm
 
 from src.base import loggers
+from src.base.loggers import TqdmToLogger
 from src.merging.ops import create_collection, rename_fields
 
 PathType = typing.Union[os.PathLike, str]
 
 
 class Loader(ABC):
+    """
+    Class used to load dataset to Mongo DB.
+    To create loader for your file you only need to specify two things:
+        1. mapping - that is mapping between old field names and common field names
+        2. transformation - function that makes transformation on single document of your collection
+    After that you only need to init class with Mongo client, db name and collection name and call
+    insert.
+    """
     # field mapping dictionary: ol_field_name -> new_field_name
     mapping: dict = dict()
+
+    # default logger
     logger = loggers.get_logger()
 
     def __init__(self,
@@ -24,6 +36,7 @@ class Loader(ABC):
                  collection_name: str,
                  disable_tqdm: bool = False):
         self.client: MongoClient = client
+        # by default use db_name = main
         self.db_name: str = db_name
         self.collection_name: str = collection_name
 
@@ -53,12 +66,27 @@ class Loader(ABC):
             raise TypeError(f"Paths must be list, tuple or str objects, got {type(path)}")
 
     def insert_one_file(self, path: PathType):
+        """
+        Defines the pipeline of inserting one file (list of documents)
+        Default pipeline is:
+            1. load file from disk
+            2. apply transformation on each document in this file
+            3. apply field mapping on each document
+            4. finally, insert these documents to collection
+        :param path: path to json file, that contains list of documents
+        :return: None
+        """
         json_objs = self.load_one_file(path)
         json_objs = self.transform(json_objs)
         json_objs = rename_fields(json_objs, self.mapping)
         self.collection.insert_many(json_objs)
 
     def load_one_file(self, path: PathType) -> typing.List[dict]:
+        """
+        Load one file from disk
+        :param path: path to json file with list of documents
+        :return: list of documents
+        """
         self.logger.info(f"Loading file {path}")
 
         try:
@@ -72,11 +100,22 @@ class Loader(ABC):
         return json_objs
 
     def transform(self, json_objects: typing.Iterable[dict]) -> typing.Iterable[dict]:
+        """
+        Method that applies transformation to each document
+        :param json_objects: list of documents(dicts)
+        :return: iterable of transformed documents
+        """
         self.logger.info("Applying transformation")
         return map(self.transformation, self.pbar(json_objects))
 
     @abstractmethod
     def transformation(self, input_dict: dict) -> dict:
+        """
+        This is the only method you need to define. THis method takes a
+        document and transform it
+        :param input_dict:
+        :return:
+        """
         pass
 
     def pbar(self, iterable: typing.Iterable, **kwargs):
@@ -86,6 +125,7 @@ class Loader(ABC):
         :param kwargs: dict of arguments to put in tqdm
         :return:
         """
+        # tqdm_out = TqdmToLogger(self.logger, level=logging.INFO)
         return tqdm(iterable, disable=self.disable_tqdm, **kwargs)
 
 
