@@ -28,4 +28,4 @@ class XMLParser(BaseParser):
 
 if __name__ == '__main__':
     xml_parser = XMLParser(output_dir="../../data/xml-parsed/")
-    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO YAML
+    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO XML
