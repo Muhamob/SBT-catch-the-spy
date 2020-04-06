@@ -1,3 +1,4 @@
+import collections
 import os
 
 import xmltodict
@@ -12,10 +13,20 @@ class XMLParser(BaseParser):
             doc = xmltodict.parse(f.read(), process_namespaces=True)
             rows = doc['PointzAggregatorUsers']['user']
 
+        for user in rows:
+            card = user['cards']['card']
+            if isinstance(card, collections.OrderedDict):
+                card_list = list()
+                card_list.append(card)
+                user['cards']['card'] = card_list
+                print(type(user['cards']['card']))
+
+        #output_path = "output.json"
         output_path = kwargs.get('output_path', self._get_default_output_path(path))
         self.to_json(rows, output_path=output_path)
 
 
 if __name__ == '__main__':
     xml_parser = XMLParser(output_dir="../../data/xml-parsed/")
-    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO YAML
+    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO XML
+
