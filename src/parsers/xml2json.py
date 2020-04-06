@@ -15,7 +15,7 @@ class XMLParser(BaseParser):
 
         for user in rows:
             card = user['cards']['card']
-            if type(card) is collections.OrderedDict:
+            if isinstance(card, collections.OrderedDict):
                 card_list = list()
                 card_list.append(card)
                 user['cards']['card'] = card_list
