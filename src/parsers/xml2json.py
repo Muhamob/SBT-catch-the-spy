@@ -10,7 +10,7 @@ from src.base.parsers import BaseParser
 class XMLParser(BaseParser):
     def parse(self, path: typing.Union[str, os.PathLike], *args, **kwargs):
         with open(path, 'r') as f:
-            doc = xmltodict.parse(f.readgit (), process_namespaces=True)
+            doc = xmltodict.parse(f.read(), process_namespaces=True)
             rows = doc['PointzAggregatorUsers']['user']
 
         for user in rows:
@@ -28,4 +28,4 @@ class XMLParser(BaseParser):
 
 if __name__ == '__main__':
     xml_parser = XMLParser(output_dir="../../data/xml-parsed/")
-    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO XML
+    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO  XML
