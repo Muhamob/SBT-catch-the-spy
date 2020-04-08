@@ -13,7 +13,7 @@ class BaseParser(ABC):
 
     # Parser input format
     input_format: str = "json"
-    logger = loggers.logger
+    logger = loggers.get_logger()
 
     def __init__(self, output_dir: typing.Union[str, os.PathLike]):
         self.output_dir = output_dir
