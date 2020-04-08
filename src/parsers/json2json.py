@@ -21,5 +21,6 @@ class JSONParser(BaseParser):
 
 if __name__ == '__main__':
     a = JSONParser(output_dir="../../data/json-parsed")
-    a.parse('../../../final-project/data/')
+    a.parse('../../../final-project/data/FrequentFlyerForum-Profiles.json')
+
 
