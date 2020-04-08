@@ -64,6 +64,9 @@ class Loader(ABC):
             self.logger.error(f"Paths must be list, tuple or str objects, got {type(path)}")
             raise TypeError(f"Paths must be list, tuple or str objects, got {type(path)}")
 
+        # Make final transformation in database
+        self.db_transformation()
+
         total_count = self.collection.count_documents({})
         self.logger.info(f"Total count of documents in collection {self.collection_name} is {total_count}")
 
@@ -129,3 +132,10 @@ class Loader(ABC):
         """
         # tqdm_out = TqdmToLogger(self.logger, level=logging.INFO)
         return tqdm(iterable, disable=self.disable_tqdm, **kwargs)
+
+    def db_transformation(self):
+        """
+        Make a request in database and perform transformation in it
+        :return: None
+        """
+        pass
