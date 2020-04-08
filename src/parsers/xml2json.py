@@ -21,7 +21,19 @@ class XMLParser(BaseParser):
                     card_list.append(card)
                     user['cards']['card'] = card_list
             except Exception as e:
-                self.logger.warning(f"User with uid {user['@uid']} don't have card field in cards")
+                user['cards']['card'] = []
+                self.logger.warning(f"User with uid {user['@uid']} don't have card subfield in cards field")
+
+            for card in user['cards']['card']:
+                try:
+                    activity = card['activities']['activity']
+                    if isinstance(activity, collections.OrderedDict):
+                        activities_list = list()
+                        activities_list.append(activity)
+                        card['activities']['activity'] = activities_list
+                except Exception as e:
+                    card['activities']['activity'] = []
+                    self.logger.warning(f"User with uid {user['@uid']} don't have activity subfield in activities field")
 
         #output_path = "output.json"
         output_path = kwargs.get('output_path', self._get_default_output_path(path))
