@@ -14,12 +14,14 @@ class XMLParser(BaseParser):
             rows = doc['PointzAggregatorUsers']['user']
 
         for user in rows:
-            card = user['cards']['card']
-            if isinstance(card, collections.OrderedDict):
-                card_list = list()
-                card_list.append(card)
-                user['cards']['card'] = card_list
-                print(type(user['cards']['card']))
+            try:
+                card = user['cards']['card']
+                if isinstance(card, collections.OrderedDict):
+                    card_list = list()
+                    card_list.append(card)
+                    user['cards']['card'] = card_list
+            except Exception as e:
+                self.logger.warning(f"User with uid {user['@uid']} don't have card field in cards")
 
         #output_path = "output.json"
         output_path = kwargs.get('output_path', self._get_default_output_path(path))
@@ -28,5 +30,5 @@ class XMLParser(BaseParser):
 
 if __name__ == '__main__':
     xml_parser = XMLParser(output_dir="../../data/xml-parsed/")
-    xml_parser.parse("PointzAggregator-AirlinesData.xml")  # PATH TO XML
+    xml_parser.parse("../../../final-project/data/PointzAggregator-AirlinesData.xml")  # PATH TO XML
 
