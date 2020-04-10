@@ -60,6 +60,10 @@ class JSONLoader(Loader):
 
         return output_dict
 
+    # uncomment below operation to unwind flights
+    # def db_transformation(self):
+    #     unwind_array_field(self.collection, 'flights')
+
 
 if __name__ == "__main__":
     loader = JSONLoader(client=MongoClient('localhost', 27017),

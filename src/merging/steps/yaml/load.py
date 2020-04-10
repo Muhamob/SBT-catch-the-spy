@@ -3,7 +3,7 @@ from pprint import pprint
 
 from pymongo import MongoClient
 
-from src.merging.ops import create_uid
+from src.merging.ops import create_uid, unwind_array_field
 from src.merging.steps.loader import Loader
 
 # Settings
@@ -32,30 +32,7 @@ class YamlLoader(Loader):
         return input_dict
 
     def db_transformation(self):
-        self.collection.aggregate([
-            {
-                '$unwind': {
-                    'path': '$frequent_flyers',
-                    'preserveNullAndEmptyArrays': True
-                }
-            },
-            {
-                '$replaceRoot': {
-                    'newRoot': {
-                        '$mergeObjects': ['$frequent_flyers', '$$ROOT']
-                    }
-                }
-            },
-            {
-                '$project': {
-                    'frequent_flyers': False
-                }
-            },
-            create_uid(),
-            {
-                '$out': self.collection_name
-            }
-        ])
+        unwind_array_field(self.collection, 'frequent_flyers')
 
 
 if __name__ == "__main__":

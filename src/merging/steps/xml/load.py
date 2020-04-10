@@ -4,7 +4,7 @@ from pprint import pprint
 
 from pymongo import MongoClient
 
-from src.merging.ops import create_uid, rename_fields, set_field
+from src.merging.ops import create_uid, rename_fields, set_field, unwind_array_field
 from src.merging.steps.loader import Loader
 
 # Settings
@@ -41,30 +41,7 @@ class XMLLoader(Loader):
         return output_dict
 
     def db_transformation(self):
-        self.collection.aggregate([
-            {
-                '$unwind': {
-                    'path': '$flights',
-                    'preserveNullAndEmptyArrays': True
-                }
-            },
-            {
-                '$replaceRoot': {
-                    'newRoot': {
-                        '$mergeObjects': ['$flights', '$$ROOT']
-                    }
-                }
-            },
-            {
-                '$project': {
-                    'flights': False
-                }
-            },
-            create_uid(),
-            {
-                '$out': self.collection_name
-            }
-        ])
+        unwind_array_field(self.collection, 'flights')
 
 
 if __name__ == "__main__":

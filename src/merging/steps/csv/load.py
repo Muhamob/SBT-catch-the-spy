@@ -2,6 +2,7 @@ import json
 import os
 import typing
 from glob import glob
+from pprint import pprint
 
 from pymongo import MongoClient
 
@@ -41,4 +42,5 @@ if __name__ == "__main__":
     loader = CSVLoader(client=MongoClient('localhost', 27017),
                        db_name='main',
                        collection_name='csv')
-    loader.insert(path=glob('../../data/csv-parsed/*.json'))
+    loader.insert(path=glob('../../../../data/csv-parsed/*.json'))
+    pprint(loader.collection.find_one())

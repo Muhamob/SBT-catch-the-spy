@@ -88,3 +88,30 @@ def sample(size: int) -> dict:
     return {
         '$sample': {'size': size}
     }
+
+
+def unwind_array_field(collection: Collection, array_field: str):
+    return collection.aggregate([
+        {
+            '$unwind': {
+                'path': f'${array_field}',
+                'preserveNullAndEmptyArrays': True
+            }
+        },
+        {
+            '$replaceRoot': {
+                'newRoot': {
+                    '$mergeObjects': [f'${array_field}', '$$ROOT']
+                }
+            }
+        },
+        {
+            '$project': {
+                f'{array_field}': False
+            }
+        },
+        create_uid(),
+        {
+            '$out': collection.name
+        }
+    ])
