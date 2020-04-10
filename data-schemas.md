@@ -2,14 +2,14 @@
 Схемы json документов, которые получаются после парсинга соответствующих файлов
 
 ## TOC (Table of Content):
-1. [Raw data schemas](raw)
+1. [Raw data schemas](#raw)
     1. [csv](#csv)
     2. [tab](#tab)
     3. [xlsx](#xlsx)
     4. [xml](#xml)
     5. [yaml](#yaml)
     6. [json](#json)
-2. [Mongo data schemas](mongo)
+2. [Mongo data schemas](#mongo)
     1. [csv](#csv-mongo)
     2. [tab](#tab-mongo)
     3. [xlsx](#xlsx-mongo)
